@@ -9,30 +9,10 @@
 #
 ####################################################################################################
 #
-# ABOUT THIS PROGRAM
-#
-# NAME
-#  This script is to be used to get Java 6 working on a mac that has only had Java 7 before hand.
-#
-#	"Java 2012-006" (http://support.apple.com/kb/DL1572) is required to be installed 1st.
-#
-#	Liberally pinched from: 
+# Liberally pinched from: 
 #	https://github.com/rtrouton/rtrouton_scripts/tree/master/rtrouton_scripts/re-enable_java_6
 #	https://github.com/rtrouton/rtrouton_scripts/tree/master/rtrouton_scripts/enable_java_web_plugins_at_login
 #	http://managingosx.wordpress.com/2013/01/31/disabled-java-plugins-xprotect-updater/
-#
-#
-# DESCRIPTION
-#	This script will; disable the Java 7 plugin, re-enable the Java 6  plugin & disables XProtect.
-#
-#	And, this script will set /Applications/Safari.app as the default application for the html MIME type
-#	for the currently logged in user.
-#
-####################################################################################################
-#
-# More information: http://macmule.com/2013/02/18/getting-java-6-working-on-a-mac-that-has-only-had-java-7-installed/
-#
-# GitRepo: https://github.com/macmule/disableJava7EnableJava6AndDisableXProtect
 #
 ####################################################################################################
 #
