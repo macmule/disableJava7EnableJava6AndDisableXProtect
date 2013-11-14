@@ -10,9 +10,9 @@
 ####################################################################################################
 #
 # Liberally pinched from: 
-#	https://github.com/rtrouton/rtrouton_scripts/tree/master/rtrouton_scripts/re-enable_java_6
-#	https://github.com/rtrouton/rtrouton_scripts/tree/master/rtrouton_scripts/enable_java_web_plugins_at_login
-#	http://managingosx.wordpress.com/2013/01/31/disabled-java-plugins-xprotect-updater/
+# https://github.com/rtrouton/rtrouton_scripts/tree/master/rtrouton_scripts/re-enable_java_6
+# https://github.com/rtrouton/rtrouton_scripts/tree/master/rtrouton_scripts/enable_java_web_plugins_at_login
+# http://managingosx.wordpress.com/2013/01/31/disabled-java-plugins-xprotect-updater/
 #
 ####################################################################################################
 #
