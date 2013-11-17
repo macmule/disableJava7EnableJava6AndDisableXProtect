@@ -20,18 +20,15 @@
 #
 ####################################################################################################
 
-###
+
 # Get logged in users username & home folder path for plist creation later.
-###
 loggedInUser=`/bin/ls -l /dev/console | /usr/bin/awk '{ print $3 }'`
 loggedInUserHome=`dscl . -read /Users/$loggedInUser | grep  NFSHomeDirectory: | cut -c 19- | head -n 1`
 
 echo "Home Directory for: $loggedInUser, is here: $loggedInUserHome..."
 
-###
-# Get the Macs UUID
-###
 
+# Get the Macs UUID
 if [[ `ioreg -rd1 -c IOPlatformExpertDevice | grep -i "UUID" | cut -c27-50` == "00000000-0000-1000-8000-" ]]; then
 	MAC_UUID=`ioreg -rd1 -c IOPlatformExpertDevice | grep -i "UUID" | cut -c51-62 | awk {'print tolower()'}`
 elif [[ `ioreg -rd1 -c IOPlatformExpertDevice | grep -i "UUID" | cut -c27-50` != "00000000-0000-1000-8000-" ]]; then
@@ -40,10 +37,8 @@ fi
 
 echo "This Mac's UUID is: $MAC_UUID..."
 
-###
-# Checks for backup directory for Java 7 plug-in, creating if needed.
-###
 
+# Checks for backup directory for Java 7 plug-in, creating if needed.
 if [ -d "/Library/Internet Plug-Ins (Disabled)" ]; then
      echo "Directory /Library/Internet Plug-Ins (Disabled) found. Skipping... "
   else
@@ -52,57 +47,37 @@ if [ -d "/Library/Internet Plug-Ins (Disabled)" ]; then
      echo "Directory /Library/Internet Plug-Ins (Disabled) not found. Creating... "
 fi
 
-###
 # Removes previous versions for Java 7 if found in "Internet Plug-Ins (Disabled)"
-###
-
 if [ -d "/Library/Internet Plug-Ins (Disabled)/JavaAppletPlugin.plugin" ]; then
       rm -rf "/Library/Internet Plug-Ins (Disabled)/JavaAppletPlugin.plugin"
       echo "Deleting previous Java 7 plug-in found in /Library/Internet Plug-Ins (Disabled)..."
 fi
 
-###
-# Moves current Java 7 plug-in to the backup directory
-###
 
+# Moves current Java 7 plug-in to the backup directory
 if [ -d "/Library/Internet Plug-Ins/JavaAppletPlugin.plugin" ]; then
      mv "/Library/Internet Plug-Ins/JavaAppletPlugin.plugin" "/Library/Internet Plug-Ins (Disabled)/JavaAppletPlugin.plugin"
      echo "Moving Java 7 plug-in to /Library/Internet Plug-Ins (Disabled)..."
 fi
 
-###
 # Create symlink to the Apple Java 6 plug-in in /Library/Internet Plug-Ins 
-###
-
 ln -sf "/System/Library/Java/Support/Deploy.bundle/Contents/Resources/JavaPlugin2_NPAPI.plugin" "/Library/Internet Plug-Ins/JavaAppletPlugin.plugin"
 echo "Created symlink for Java 6 plug-in..."
 
-###
 # Re-enable Java SE 6 Web Start, which allows Java applets to run in web browsers
-###
-
 ln -sf "/System/Library/Frameworks/JavaVM.framework/Commands/javaws" "/usr/bin/javaws"
 echo "Re-enabled Java SE 6 Web Start..."
 
-###
 # Set the the "Enable applet plug-in and Web Start Applications" setting in the Java Preferences for the current user.
-###
-
 /usr/libexec/PlistBuddy -c "Delete :GeneralByTask:Any:WebComponentsEnabled" "$loggedInUserHome"/Library/Preferences/ByHost/com.apple.java.JavaPreferences.${MAC_UUID}.plist
 /usr/libexec/PlistBuddy -c "Add :GeneralByTask:Any:WebComponentsEnabled bool true" "$loggedInUserHome"/Library/Preferences/ByHost/com.apple.java.JavaPreferences.${MAC_UUID}.plist
 /usr/libexec/PlistBuddy -c "Delete :GeneralByTask:Any:WebComponentsLastUsed" "$loggedInUserHome"/Library/Preferences/ByHost/com.apple.java.JavaPreferences.${MAC_UUID}.plist
 /usr/libexec/PlistBuddy -c "Add :GeneralByTask:Any:WebComponentsLastUsed real $(( $(date "+%s") - 978307200 ))" "$loggedInUserHome"/Library/Preferences/ByHost/com.apple.java.JavaPreferences.${MAC_UUID}.plist
 
-##
 # Delete the JavaAppletPlugin version key from XProtect
-###
-
 sudo /usr/libexec/PlistBuddy -c "Delete :JavaWebComponentVersionMinimum" /System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/XProtect.meta.plist
 
-###
 # Stop XProtect Updating itself
-###
-
 sudo /bin/launchctl unload -w "/System/Library/LaunchDaemons/com.apple.xprotectupdater.plist"
 
 exit 0
